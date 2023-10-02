@@ -20,12 +20,24 @@ class ProductsCOntroller extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required'],
             'slug' => ['required'],
             'price' => ['required'],
+
         ]);
-        return Product::create($request->all());
+
+
+        return Product::create(
+            [
+                'name' => $validated['name'],
+                'slug' => $validated['slug'],
+                'price' => $validated['price'],
+                'user_id' => auth('sanctum')->id()
+            ]
+
+
+        );
     }
 
     /**
